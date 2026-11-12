@@ -11,7 +11,7 @@ if not exist bin\ffmpeg.exe (
 python -m venv .venv
 call .venv\Scripts\activate
 pip install -r requirements.txt
-pyinstaller --noconfirm --windowed --name FBLiveTranscriber ^
+pyinstaller --noconfirm --windowed --icon icon.ico --add-data "icon.ico;." --name FBLiveTranscriber ^
   --collect-all faster_whisper --collect-all ctranslate2 ^
   --add-binary "bin\yt-dlp.exe;." --add-binary "bin\ffmpeg.exe;." app.py
 echo.

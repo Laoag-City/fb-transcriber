@@ -31,6 +31,11 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("FB Live Transcriber")
+        try:
+            base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+            self.iconbitmap(os.path.join(base, "icon.ico"))
+        except Exception:
+            pass  # non-Windows or icon missing
         self.geometry("820x600")
         self.q = queue.Queue()
         self.stop_evt = threading.Event()
