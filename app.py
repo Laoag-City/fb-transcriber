@@ -7,9 +7,12 @@ SAMPLE_RATE = 16000
 CHUNK_SECONDS = 12
 NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
-LANGS = {"Auto-detect": None, "English": "en", "Tagalog/Filipino": "tl",
-         "Spanish": "es", "Japanese": "ja", "Korean": "ko",
-         "Chinese": "zh", "Indonesian": "id"}
+WHISPER_LANGS = {"Auto-detect": None, "English": "en", "Tagalog/Filipino": "tl",
+                 "Spanish": "es", "Japanese": "ja", "Korean": "ko",
+                 "Chinese": "zh", "Indonesian": "id"}
+# Meta MMS uses ISO 639-3 codes
+MMS_LANGS = {"Ilocano": "ilo", "Cebuano": "ceb", "Tagalog": "tgl", "English": "eng"}
+ENGINES = ["Whisper", "MMS (Ilocano, Cebuano...)"]
 MODELS = ["tiny", "base", "small", "medium", "large-v3"]
 
 
@@ -49,17 +52,24 @@ class App(tk.Tk):
         ttk.Entry(top, textvariable=self.url).grid(row=1, column=0, columnspan=6, sticky="ew", pady=2)
         top.columnconfigure(0, weight=1)
 
-        ttk.Label(top, text="Model").grid(row=2, column=0, sticky="w")
+        ttk.Label(top, text="Engine").grid(row=2, column=0, sticky="w")
+        self.engine = tk.StringVar(value=ENGINES[0])
+        eng = ttk.Combobox(top, textvariable=self.engine, values=ENGINES, width=24, state="readonly")
+        eng.grid(row=3, column=0, sticky="w")
+        eng.bind("<<ComboboxSelected>>", lambda e: self.on_engine())
+        ttk.Label(top, text="Model").grid(row=2, column=1, sticky="w", padx=8)
         self.model = tk.StringVar(value="small")
-        ttk.Combobox(top, textvariable=self.model, values=MODELS, width=10, state="readonly").grid(row=3, column=0, sticky="w")
-        ttk.Label(top, text="Language").grid(row=2, column=1, sticky="w", padx=8)
+        self.model_cb = ttk.Combobox(top, textvariable=self.model, values=MODELS, width=10, state="readonly")
+        self.model_cb.grid(row=3, column=1, sticky="w", padx=8)
+        ttk.Label(top, text="Language").grid(row=2, column=2, sticky="w")
         self.lang = tk.StringVar(value="Auto-detect")
-        ttk.Combobox(top, textvariable=self.lang, values=list(LANGS), width=18, state="readonly").grid(row=3, column=1, padx=8)
-        ttk.Label(top, text="Cookies from").grid(row=2, column=2, sticky="w")
+        self.lang_cb = ttk.Combobox(top, textvariable=self.lang, values=list(WHISPER_LANGS), width=18, state="readonly")
+        self.lang_cb.grid(row=3, column=2)
+        ttk.Label(top, text="Cookies from").grid(row=2, column=3, sticky="w", padx=8)
         self.cookies = tk.StringVar(value="none")
-        ttk.Combobox(top, textvariable=self.cookies, values=["none", "chrome", "edge", "firefox"], width=9, state="readonly").grid(row=3, column=2)
-        self.btn = ttk.Button(top, text="Start", command=self.toggle); self.btn.grid(row=3, column=3, padx=8)
-        ttk.Button(top, text="Save...", command=self.save).grid(row=3, column=4)
+        ttk.Combobox(top, textvariable=self.cookies, values=["none", "chrome", "edge", "firefox"], width=9, state="readonly").grid(row=3, column=3, padx=8)
+        self.btn = ttk.Button(top, text="Start", command=self.toggle); self.btn.grid(row=3, column=4, padx=4)
+        ttk.Button(top, text="Save...", command=self.save).grid(row=3, column=5)
 
         self.out = scrolledtext.ScrolledText(self, wrap="word", font=("Segoe UI", 11))
         self.out.pack(fill="both", expand=True, padx=8, pady=4)
@@ -69,6 +79,17 @@ class App(tk.Tk):
         self.after(150, self.poll)
 
     # ---- UI helpers
+    def is_mms(self):
+        return self.engine.get() == ENGINES[1]
+
+    def on_engine(self):
+        if self.is_mms():
+            self.lang_cb.config(values=list(MMS_LANGS)); self.lang.set("Ilocano")
+            self.model_cb.config(state="disabled")
+        else:
+            self.lang_cb.config(values=list(WHISPER_LANGS)); self.lang.set("Auto-detect")
+            self.model_cb.config(state="readonly")
+
     def poll(self):
         try:
             while True:
@@ -127,9 +148,31 @@ class App(tk.Tk):
     def run(self):
         try:
             self.q.put(("status", "Loading model (first run downloads it)..."))
-            from faster_whisper import WhisperModel
-            model = WhisperModel(self.model.get(), device="auto", compute_type="auto")
-            lang = LANGS[self.lang.get()]
+            import numpy as np
+            if self.is_mms():
+                import torch
+                from transformers import Wav2Vec2ForCTC, AutoProcessor
+                code = MMS_LANGS[self.lang.get()]
+                proc = AutoProcessor.from_pretrained("facebook/mms-1b-all", target_lang=code)
+                mms = Wav2Vec2ForCTC.from_pretrained("facebook/mms-1b-all", target_lang=code,
+                                                     ignore_mismatched_sizes=True).eval()
+
+                def transcribe(audio, dur):
+                    if float(np.sqrt(np.mean(audio ** 2))) < 0.005:  # near-silence
+                        return []
+                    inp = proc(audio, sampling_rate=SAMPLE_RATE, return_tensors="pt")
+                    with torch.no_grad():
+                        ids = torch.argmax(mms(**inp).logits, dim=-1)[0]
+                    txt = proc.decode(ids).strip()
+                    return [(0.0, dur, txt)] if txt else []
+            else:
+                from faster_whisper import WhisperModel
+                wm = WhisperModel(self.model.get(), device="auto", compute_type="auto")
+                lang = WHISPER_LANGS[self.lang.get()]
+
+                def transcribe(audio, dur):
+                    segs, _ = wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)
+                    return [(x.start, x.end, x.text.strip()) for x in segs]
 
             ytcmd = [find_tool("yt-dlp"), "-q", "--no-warnings", "-f", "worst[height>=240]/worst/best",
                      "--ffmpeg-location", os.path.dirname(find_tool("ffmpeg")) or ".",
@@ -145,7 +188,6 @@ class App(tk.Tk):
             self.procs = [yt, ff]
             self.q.put(("status", "Listening..."))
 
-            import numpy as np
             chunk_bytes = SAMPLE_RATE * 2 * CHUNK_SECONDS
             offset = 0.0
             while not self.stop_evt.is_set():
@@ -157,11 +199,9 @@ class App(tk.Tk):
                 if len(buf) < SAMPLE_RATE * 2:  # <1s => stream ended
                     break
                 audio = np.frombuffer(buf, np.int16).astype(np.float32) / 32768.0
-                segs, _ = model.transcribe(audio, language=lang, vad_filter=True, beam_size=1)
-                for s in segs:
-                    txt = s.text.strip()
+                for st, en, txt in transcribe(audio, len(buf) / 2 / SAMPLE_RATE):
                     if txt:
-                        a, b = offset + s.start, offset + s.end
+                        a, b = offset + st, offset + en
                         self.lines.append((a, b, txt))
                         self.q.put(("text", f"[{fmt_ts(a)}] {txt}"))
                 offset += len(buf) / 2 / SAMPLE_RATE

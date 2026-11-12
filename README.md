@@ -6,7 +6,8 @@ A Windows desktop app that transcribes Facebook livestreams and videos to text i
 
 - Live transcription with about 12 seconds of delay
 - Works on Facebook live streams and regular videos
-- Model sizes from `tiny` to `large-v3`, with Tagalog, Cebuano, English and other languages
+- Two engines: **Whisper** (English, Tagalog, Spanish, Japanese, etc.) and **Meta MMS** (Ilocano, Cebuano, Tagalog, English)
+- Whisper model sizes from `tiny` to `large-v3`
 - Export the transcript as `.txt` (with timestamps) or `.srt` (subtitles)
 - Private or group streams are supported through your browser's login cookies
 
@@ -27,7 +28,16 @@ A Windows desktop app that transcribes Facebook livestreams and videos to text i
 
 The first run downloads the selected Whisper model, which can take a few minutes.
 
-### Choosing a model
+### Choosing an engine
+
+| Engine | Use for | Notes |
+|---|---|---|
+| Whisper | Most languages, including Tagalog | Punctuation, real timestamps, VAD. Best general choice |
+| MMS | Ilocano, Cebuano (not supported by Whisper) | About 3.5 GB download on first use, no punctuation, one timestamp per 12 s chunk, needs a fast CPU or GPU |
+
+Whisper does not support Ilocano or Cebuano at all, which is why MMS is included.
+
+### Choosing a Whisper model
 
 | Model | Download size | Speed on a typical CPU | Accuracy |
 |---|---|---|---|
@@ -48,6 +58,7 @@ If the status bar shows the transcript falling behind the stream, switch to a sm
 **Run from source:**
 ```bash
 pip install faster-whisper numpy
+pip install torch transformers   # only needed for the MMS engine
 # put yt-dlp.exe and ffmpeg.exe in the bin\ folder (or on PATH)
 python app.py
 ```
@@ -68,6 +79,7 @@ Audio is cut into 12-second chunks, and each chunk is transcribed with voice-act
 | Error right after clicking Start | Update `yt-dlp.exe`. Facebook changes its pages often |
 | "Login required" or empty result | Set **Cookies from** to the browser you're logged into |
 | Transcript lags behind the stream | Use a smaller model |
+| MMS is slow or runs out of memory | Close other apps; MMS needs about 4 GB RAM and a fast CPU |
 | Poor Tagalog accuracy | Use `medium` or `large-v3` and select the language explicitly |
 
 ## Legal

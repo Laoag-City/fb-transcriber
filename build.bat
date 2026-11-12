@@ -11,8 +11,9 @@ if not exist bin\ffmpeg.exe (
 python -m venv .venv
 call .venv\Scripts\activate
 pip install -r requirements.txt
+pip install torch --index-url https://download.pytorch.org/whl/cpu
 pyinstaller --noconfirm --windowed --icon icon.ico --add-data "icon.ico;." --name FBLiveTranscriber ^
-  --collect-all faster_whisper --collect-all ctranslate2 ^
+  --collect-all faster_whisper --collect-all ctranslate2 --collect-all transformers ^
   --add-binary "bin\yt-dlp.exe;." --add-binary "bin\ffmpeg.exe;." app.py
 echo.
 echo Done: dist\FBLiveTranscriber\FBLiveTranscriber.exe
