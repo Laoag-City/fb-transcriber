@@ -8,7 +8,7 @@ CHUNK_SECONDS = 12
 NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 LANGS = {"Auto-detect": None, "English": "en", "Tagalog/Filipino": "tl",
-         "Cebuano": "ceb", "Spanish": "es", "Japanese": "ja", "Korean": "ko",
+         "Spanish": "es", "Japanese": "ja", "Korean": "ko",
          "Chinese": "zh", "Indonesian": "id"}
 MODELS = ["tiny", "base", "small", "medium", "large-v3"]
 
