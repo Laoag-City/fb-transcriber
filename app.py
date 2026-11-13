@@ -76,7 +76,7 @@ class App(tk.Tk):
         self.status = tk.StringVar(value="Idle")
         foot = ttk.Frame(self); foot.pack(fill="x", padx=8, pady=(0, 6))
         ttk.Label(foot, textvariable=self.status, anchor="w").pack(side="left")
-        ttk.Label(foot, text="\u00a9 2026 eihcek. All rights reserved.", foreground="gray").pack(side="right")
+        ttk.Label(foot, text="\u00a9 2026 eihcek. MIT License.", foreground="gray").pack(side="right")
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.after(150, self.poll)
 
