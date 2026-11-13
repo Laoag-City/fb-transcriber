@@ -86,7 +86,7 @@ Audio is cut into 12-second chunks. Whisper uses voice-activity detection to ski
 
 ## Legal
 
-© 2026 eihcek. Released under the [MIT License](LICENSE).
+© 2026 eihcek. Free for non-commercial use only under the [PolyForm Noncommercial License 1.0.0](LICENSE). Commercial use requires permission from the author.
 
 Only record and transcribe streams you own or have permission to use. Respect Facebook's terms and the broadcaster's rights.
 
@@ -96,7 +96,7 @@ Only record and transcribe streams you own or have permission to use. Respect Fa
 app.py          # the whole application (tkinter GUI + pipeline)
 build.bat       # Windows build script (PyInstaller)
 requirements.txt
-LICENSE         # MIT
+LICENSE         # PolyForm Noncommercial 1.0.0
 icon.ico        # app icon
 make_icon.py    # regenerates icon.ico (needs pillow)
 .github/workflows/build.yml   # CI build that produces the .exe zip
