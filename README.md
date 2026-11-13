@@ -86,6 +86,8 @@ Audio is cut into 12-second chunks. Whisper uses voice-activity detection to ski
 
 ## Legal
 
+© 2026 eihcek. All rights reserved.
+
 Only record and transcribe streams you own or have permission to use. Respect Facebook's terms and the broadcaster's rights.
 
 ## Project layout
