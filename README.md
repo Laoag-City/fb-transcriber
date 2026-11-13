@@ -1,3 +1,8 @@
+# Donate
+
+If you find this useful please donate to my GCash: 09065212220
+Thank you
+
 # FB Live Transcriber
 
 A Windows desktop app that transcribes Facebook livestreams and videos to text in near real time. Paste a URL, click **Start**, and the transcript appears as the stream plays. Everything runs locally, so no audio is sent to a cloud service.
