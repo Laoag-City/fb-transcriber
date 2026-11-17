@@ -8,12 +8,12 @@ if not exist bin\ffmpeg.exe (
   for /r ffmpeg_tmp %%f in (ffmpeg.exe) do copy "%%f" bin\ffmpeg.exe
   rmdir /s /q ffmpeg_tmp & del ffmpeg.zip
 )
-python -m venv .venv
+py -3.12 -m venv .venv || exit /b 1
 call .venv\Scripts\activate
-pip install -r requirements.txt
-pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt || exit /b 1
+pip install torch --index-url https://download.pytorch.org/whl/cpu || exit /b 1
 pyinstaller --noconfirm --windowed --icon icon.ico --add-data "icon.ico;." --name FBLiveTranscriber ^
   --collect-all faster_whisper --collect-all ctranslate2 --collect-all transformers --collect-all spellchecker ^
-  --add-binary "bin\yt-dlp.exe;." --add-binary "bin\ffmpeg.exe;." app.py
+  --add-binary "bin\yt-dlp.exe;." --add-binary "bin\ffmpeg.exe;." app.py || exit /b 1
 echo.
 echo Done: dist\FBLiveTranscriber\FBLiveTranscriber.exe

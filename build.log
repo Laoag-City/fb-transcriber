@@ -1,0 +1,636 @@
+﻿Requirement already satisfied: faster-whisper in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from -r requirements.txt (line 1)) (1.2.1)
+Requirement already satisfied: numpy in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from -r requirements.txt (line 2)) (2.5.5)
+Requirement already satisfied: pyspellchecker in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from -r requirements.txt (line 3)) (0.9.1)
+Requirement already satisfied: pyinstaller in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from -r requirements.txt (line 4)) (6.22.3)
+Requirement already satisfied: transformers in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from -r requirements.txt (line 5)) (5.23.0)
+Requirement already satisfied: ctranslate2<5,>=4.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from faster-whisper->-r requirements.txt (line 1)) (4.9.0)
+Requirement already satisfied: huggingface-hub>=0.21 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from faster-whisper->-r requirements.txt (line 1)) (2.4.0)
+Requirement already satisfied: tokenizers<1,>=0.13 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from faster-whisper->-r requirements.txt (line 1)) (0.23.3)
+Requirement already satisfied: onnxruntime<2,>=1.14 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from faster-whisper->-r requirements.txt (line 1)) (1.32.0)
+Requirement already satisfied: av>=11 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from faster-whisper->-r requirements.txt (line 1)) (19.0.2)
+Requirement already satisfied: tqdm in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from faster-whisper->-r requirements.txt (line 1)) (4.70.1)
+Requirement already satisfied: altgraph in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pyinstaller->-r requirements.txt (line 4)) (0.17.5)
+Requirement already satisfied: packaging>=22.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pyinstaller->-r requirements.txt (line 4)) (26.3)
+Requirement already satisfied: pefile>=2022.5.30 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pyinstaller->-r requirements.txt (line 4)) (2024.8.26)
+Requirement already satisfied: pyinstaller-hooks-contrib>=2026.7 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pyinstaller->-r requirements.txt (line 4)) (2026.10)
+Requirement already satisfied: pywin32-ctypes>=0.2.1 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pyinstaller->-r requirements.txt (line 4)) (0.2.3)
+Requirement already satisfied: setuptools>=42.0.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pyinstaller->-r requirements.txt (line 4)) (84.2.1)
+Requirement already satisfied: pyyaml>=5.1 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from transformers->-r requirements.txt (line 5)) (6.0.3)
+Requirement already satisfied: regex>=2025.10.22 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from transformers->-r requirements.txt (line 5)) (2026.11.15)
+Requirement already satisfied: typer in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from transformers->-r requirements.txt (line 5)) (0.29.1)
+Requirement already satisfied: safetensors>=0.8.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from transformers->-r requirements.txt (line 5)) (0.8.0)
+Requirement already satisfied: click<9.0.0,>=8.4.2 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (8.5.1)
+Requirement already satisfied: filelock>=3.10.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (4.2.12)
+Requirement already satisfied: fsspec>=2023.5.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (2026.9.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.6.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (1.8.0)
+Requirement already satisfied: httpx2<3,>=2.0.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (2.16.2)
+Requirement already satisfied: typing-extensions>=4.1.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (4.16.0)
+Requirement already satisfied: flatbuffers in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from onnxruntime<2,>=1.14->faster-whisper->-r requirements.txt (line 1)) (25.12.19)
+Requirement already satisfied: protobuf>=4.25.8 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from onnxruntime<2,>=1.14->faster-whisper->-r requirements.txt (line 1)) (7.36.2)
+Requirement already satisfied: colorama in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from tqdm->faster-whisper->-r requirements.txt (line 1)) (0.4.6)
+Requirement already satisfied: pydantic>=2.5.3 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from typer->transformers->-r requirements.txt (line 5)) (2.14.3)
+Requirement already satisfied: shellingham>=1.3.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from typer->transformers->-r requirements.txt (line 5)) (1.5.4)
+Requirement already satisfied: rich>=13.8.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from typer->transformers->-r requirements.txt (line 5)) (15.0.0)
+Requirement already satisfied: annotated-doc>=0.0.2 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from typer->transformers->-r requirements.txt (line 5)) (0.0.6)
+Requirement already satisfied: anyio>=4.10 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from httpx2<3,>=2.0.0->huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (4.16.0)
+Requirement already satisfied: httpcore2==2.16.2 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from httpx2<3,>=2.0.0->huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (2.16.2)
+Requirement already satisfied: idna>=3.18 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from httpx2<3,>=2.0.0->huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (3.20)
+Requirement already satisfied: truststore>=0.10 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from httpx2<3,>=2.0.0->huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (0.10.5)
+Requirement already satisfied: h11>=0.16 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from httpcore2==2.16.2->httpx2<3,>=2.0.0->huggingface-hub>=0.21->faster-whisper->-r requirements.txt (line 1)) (0.16.0)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pydantic>=2.5.3->typer->transformers->-r requirements.txt (line 5)) (0.8.0)
+Requirement already satisfied: pydantic-core==2.50.4 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pydantic>=2.5.3->typer->transformers->-r requirements.txt (line 5)) (2.50.4)
+Requirement already satisfied: typing-inspection>=0.4.4 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from pydantic>=2.5.3->typer->transformers->-r requirements.txt (line 5)) (0.4.5)
+Requirement already satisfied: markdown-it-py>=2.2.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from rich>=13.8.0->typer->transformers->-r requirements.txt (line 5)) (4.3.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from rich>=13.8.0->typer->transformers->-r requirements.txt (line 5)) (2.21.0)
+Requirement already satisfied: mdurl~=0.1 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from markdown-it-py>=2.2.0->rich>=13.8.0->typer->transformers->-r requirements.txt (line 5)) (0.1.2)
+cmd : 
+At line:1 char:364
++ ... ents\GitHub\fb-transcriber; cmd /c ".\build.bat" *> build.log; Get-Co ...
++                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: python.exe -m pip install --upgrade pip
+Looking in indexes: https://download.pytorch.org/whl/cpu
+Requirement already satisfied: torch in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (2.15.0+cpu)
+Requirement already satisfied: filelock in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (4.2.12)
+Requirement already satisfied: typing-extensions>=4.13.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (4.16.0)
+Requirement already satisfied: setuptools>=77.0.3 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (84.2.1)
+Requirement already satisfied: sympy>=1.13.3 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (3.7)
+Requirement already satisfied: jinja2 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (3.1.6)
+Requirement already satisfied: fsspec>=0.8.5 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from torch) (2026.9.0)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from sympy>=1.13.3->torch) (1.3.0)
+Requirement already satisfied: MarkupSafe>=2.0 in c:\users\eihcek\documents\github\fb-transcriber\.venv\lib\site-packages (from jinja2->torch) (3.0.3)
+
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: python.exe -m pip install --upgrade pip
+162 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.10
+162 INFO: Python: 3.12.10
+187 INFO: Platform: Windows-11-10.0.26200-SP0
+187 INFO: Python environment: C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv
+188 INFO: wrote C:\Users\EihceK\Documents\GitHub\fb-transcriber\FBLiveTranscriber.spec
+17707 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Scripts\\pyinstaller.exe',
+ 'C:\\Users\\EihceK\\AppData\\Local\\Python\\pythoncore-3.12-64\\python312.zip',
+ 'C:\\Users\\EihceK\\AppData\\Local\\Python\\pythoncore-3.12-64\\DLLs',
+ 'C:\\Users\\EihceK\\AppData\\Local\\Python\\pythoncore-3.12-64\\Lib',
+ 'C:\\Users\\EihceK\\AppData\\Local\\Python\\pythoncore-3.12-64',
+ 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv',
+ 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages',
+ 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber']
+18238 INFO: Appending 'binaries' from .spec
+18239 INFO: Appending 'datas' from .spec
+18359 INFO: checking Analysis
+18673 INFO: Building because C:\Users\EihceK\Documents\GitHub\fb-transcriber\app.py changed
+18673 INFO: Looking for Python shared library...
+18673 INFO: Using Python shared library: C:\Users\EihceK\AppData\Local\Python\pythoncore-3.12-64\python312.dll
+18673 INFO: Running Analysis Analysis-00.toc
+18673 INFO: Target bytecode optimization level: 0
+18673 INFO: Initializing module dependency graph...
+18675 INFO: Initializing module graph hook caches...
+18691 INFO: Analyzing modules for base_library.zip ...
+19998 INFO: Processing standard module hook 'hook-encodings.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+20664 INFO: Processing standard module hook 'hook-math.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+21748 INFO: Processing standard module hook 'hook-pickle.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+22753 INFO: Processing standard module hook 'hook-heapq.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+23213 INFO: Caching module dependency graph...
+23255 INFO: Analyzing C:\Users\EihceK\Documents\GitHub\fb-transcriber\app.py
+23291 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-trans
+criber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+23293 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+23629 INFO: Processing standard module hook 'hook-_tkinter.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+23943 INFO: Processing standard module hook 'hook-platform.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+23986 INFO: Processing standard module hook 'hook-_ctypes.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+24042 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\EihceK\\Documents\\GitH
+ub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+24044 INFO: SetuptoolsInfo: initializing cached setuptools info...
+24919 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+25062 INFO: Processing standard module hook 'hook-xml.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+25663 INFO: Processing standard module hook 'hook-anyio.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+27168 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-t
+ranscriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+27169 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 
+'setuptools._vendor.backports'!
+27174 INFO: Processing standard module hook 'hook-setuptools.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+27186 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-t
+ranscriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+27232 INFO: Processing standard module hook 'hook-sysconfig.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+27237 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-tran
+scriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+27239 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 
+'setuptools._vendor.jaraco'!
+27249 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\
+\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+27250 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 
+'setuptools._vendor.more_itertools'!
+27387 INFO: Processing standard module hook 'hook-_osx_support.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+27402 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-t
+ranscriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+27664 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+27667 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\EihceK\\Documents\\Gi
+tHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+28224 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-trans
+criber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+28225 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 
+'setuptools._vendor.tomli'!
+28872 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-trans
+criber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+28873 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 
+'setuptools._vendor.wheel'!
+29243 INFO: Processing standard module hook 'hook-difflib.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+29355 INFO: Processing standard module hook 'hook-webbrowser.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+29386 INFO: Processing standard module hook 'hook-pygments.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+30910 INFO: Processing standard module hook 'hook-rich.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+33047 INFO: Processing standard module hook 'hook-sqlite3.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+33716 INFO: Processing standard module hook 'hook-pydantic.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+34831 INFO: Processing standard module hook 'hook-zoneinfo.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+36764 INFO: Processing standard module hook 'hook-numpy.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+39620 INFO: Processing standard module hook 'hook-jinja2.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+40157 INFO: Processing standard module hook 'hook-torch.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+1802 WARNING: Failed to collect submodules for 'torch.utils.tensorboard' because importing 'torch.utils.tensorboard' 
+raised: ModuleNotFoundError: No module named 'tensorboard'
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\utils\hooks\__init__.py:665: 
+DeprecationWarning: `torch.distributed._sharding_spec` will be deprecated, use 
+`torch.distributed._shard.sharding_spec` instead
+  __import__(name)
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\utils\hooks\__init__.py:665: 
+DeprecationWarning: `torch.distributed._sharded_tensor` will be deprecated, use 
+`torch.distributed._shard.sharded_tensor` instead
+  __import__(name)
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\utils\hooks\__init__.py:665: 
+DeprecationWarning: `torch.distributed._shard.checkpoint` will be deprecated, use `torch.distributed.checkpoint` 
+instead
+  __import__(name)
+54408 INFO: hook-torch: this torch build does not depend on MKL...
+66930 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+72830 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-tr
+anscriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+92417 INFO: Processing standard module hook 'hook-onnxruntime.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+92526 INFO: Processing pre-safe-import-module hook 'hook-tensorflow.py' from 'C:\\Users\\EihceK\\Documents\\GitHub\\fb-
+transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+95076 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+110044 INFO: Processing standard module hook 'hook-fsspec.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+117507 INFO: Processing standard module hook 'hook-transformers.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+118855 INFO: Processing standard module hook 'hook-regex.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+120785 INFO: Processing standard module hook 'hook-av.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+146267 INFO: Analyzing hidden import 'faster_whisper.assets'
+146267 INFO: Analyzing hidden import 'ctranslate2.converters'
+146484 INFO: Analyzing hidden import 'ctranslate2.converters.eole_ct2'
+146491 INFO: Analyzing hidden import 'transformers.cli'
+146492 INFO: Analyzing hidden import 'transformers.cli.add_new_model_like'
+146752 INFO: Analyzing hidden import 'transformers.cli.chat'
+146769 INFO: Analyzing hidden import 'transformers.cli.download'
+146770 INFO: Analyzing hidden import 'transformers.cli.serve'
+146845 INFO: Analyzing hidden import 'transformers.cli.system'
+146849 INFO: Analyzing hidden import 'transformers.cli.transformers'
+146850 INFO: Analyzing hidden import 'transformers.convert_slow_tokenizers_checkpoints_to_fast'
+146853 INFO: Analyzing hidden import 'transformers.exporters'
+147852 INFO: Analyzing hidden import 'transformers.integrations.flash_paged'
+147853 INFO: Analyzing hidden import 'transformers.integrations.sdpa_paged'
+147854 INFO: Analyzing hidden import 'transformers.integrations.tiktoken'
+147855 INFO: Analyzing hidden import 'transformers.modeling_attn_mask_utils'
+147862 INFO: Analyzing hidden import 'transformers.models.afmoe.modular_afmoe'
+147871 INFO: Analyzing hidden import 'transformers.models.aimv2.modular_aimv2'
+147882 INFO: Analyzing hidden import 'transformers.models.altclip.modular_altclip'
+147890 INFO: Analyzing hidden import 'transformers.models.apertus.modular_apertus'
+147896 INFO: Analyzing hidden import 'transformers.models.arcee.modular_arcee'
+147899 INFO: Analyzing hidden import 'transformers.models.aria.modular_aria'
+147918 INFO: Analyzing hidden import 
+'transformers.models.audio_spectrogram_transformer.modular_audio_spectrogram_transformer'
+147923 INFO: Analyzing hidden import 'transformers.models.audioflamingo3.modular_audioflamingo3'
+147930 INFO: Analyzing hidden import 'transformers.models.axk1.modular_axk1'
+147935 INFO: Analyzing hidden import 'transformers.models.axk2.modular_axk2'
+147945 INFO: Analyzing hidden import 'transformers.models.aya_vision.modular_aya_vision'
+147950 INFO: Analyzing hidden import 'transformers.models.bailing_hybrid.modular_bailing_hybrid'
+147960 INFO: Analyzing hidden import 'transformers.models.bamba.modular_bamba'
+147969 INFO: Analyzing hidden import 'transformers.models.beam.modular_beam'
+147980 INFO: Analyzing hidden import 'transformers.models.beit.modular_beit'
+148001 INFO: Analyzing hidden import 'transformers.models.biogpt.modular_biogpt'
+148012 INFO: Analyzing hidden import 'transformers.models.bitnet.modular_bitnet'
+148015 INFO: Analyzing hidden import 'transformers.models.blt.modular_blt'
+148041 INFO: Analyzing hidden import 'transformers.models.camembert.modular_camembert'
+148049 INFO: Analyzing hidden import 'transformers.models.canary.modular_canary'
+148055 INFO: Analyzing hidden import 'transformers.models.chinese_clip.modular_chinese_clip'
+148064 INFO: Analyzing hidden import 'transformers.models.chmv2.modular_chmv2'
+148075 INFO: Analyzing hidden import 'transformers.models.clipseg.modular_clipseg'
+148085 INFO: Analyzing hidden import 'transformers.models.cohere.modular_cohere'
+148093 INFO: Analyzing hidden import 'transformers.models.cohere2.modular_cohere2'
+148100 INFO: Analyzing hidden import 'transformers.models.cohere2_moe.modular_cohere2_moe'
+148108 INFO: Analyzing hidden import 'transformers.models.cohere2_vision.modular_cohere2_vision'
+148115 INFO: Analyzing hidden import 'transformers.models.cohere_asr.modular_cohere_asr'
+148124 INFO: Analyzing hidden import 'transformers.models.cohere_compass.modular_cohere_compass'
+148139 INFO: Analyzing hidden import 'transformers.models.colmodernvbert.modular_colmodernvbert'
+148145 INFO: Analyzing hidden import 'transformers.models.colpali.modular_colpali'
+148150 INFO: Analyzing hidden import 'transformers.models.colqwen2.modular_colqwen2'
+148157 INFO: Analyzing hidden import 'transformers.models.conditional_detr.modular_conditional_detr'
+148175 INFO: Analyzing hidden import 'transformers.models.cosmos3_edge.modular_cosmos3_edge'
+148196 INFO: Analyzing hidden import 'transformers.models.cosmos3_omni.modular_cosmos3_omni'
+148198 INFO: Analyzing hidden import 'transformers.models.csm.modular_csm'
+148212 INFO: Analyzing hidden import 'transformers.models.cwm.modular_cwm'
+148217 INFO: Analyzing hidden import 'transformers.models.d_fine.modular_d_fine'
+148242 INFO: Analyzing hidden import 'transformers.models.data2vec.modular_data2vec_audio'
+148247 INFO: Analyzing hidden import 'transformers.models.data2vec.modular_data2vec_text'
+148258 INFO: Analyzing hidden import 'transformers.models.dbrx.modular_dbrx'
+148270 INFO: Analyzing hidden import 'transformers.models.deepseek_ocr2.modular_deepseek_ocr2'
+148293 INFO: Analyzing hidden import 'transformers.models.deepseek_v2.modular_deepseek_v2'
+148304 INFO: Analyzing hidden import 'transformers.models.deepseek_v3.modular_deepseek_v3'
+148311 INFO: Analyzing hidden import 'transformers.models.deepseek_v32.modular_deepseek_v32'
+148319 INFO: Analyzing hidden import 'transformers.models.deepseek_v4.modular_deepseek_v4'
+148355 INFO: Analyzing hidden import 'transformers.models.deepseek_vl.modular_deepseek_vl'
+148360 INFO: Analyzing hidden import 'transformers.models.deepseek_vl_hybrid.modular_deepseek_vl_hybrid'
+148375 INFO: Analyzing hidden import 'transformers.models.deformable_detr.modular_deformable_detr'
+148405 INFO: Analyzing hidden import 'transformers.models.deimv2.modular_deimv2'
+148426 INFO: Analyzing hidden import 'transformers.models.deit.modular_deit'
+148432 INFO: Analyzing hidden import 'transformers.models.deprecated'
+148433 INFO: Analyzing hidden import 'transformers.models.dia.modular_dia'
+148446 INFO: Analyzing hidden import 'transformers.models.diffllama.modular_diffllama'
+148451 INFO: Analyzing hidden import 'transformers.models.diffusion_gemma.modular_diffusion_gemma'
+148480 INFO: Analyzing hidden import 'transformers.models.dinov2.modular_dinov2'
+148489 INFO: Analyzing hidden import 'transformers.models.dinov2_with_registers.modular_dinov2_with_registers'
+148496 INFO: Analyzing hidden import 'transformers.models.dinov3_vit.modular_dinov3_vit'
+148510 INFO: Analyzing hidden import 'transformers.models.doge.modular_doge'
+148528 INFO: Analyzing hidden import 'transformers.models.dots1.modular_dots1'
+148533 INFO: Analyzing hidden import 'transformers.models.dots3_note.modular_dots3_note'
+148570 INFO: Analyzing hidden import 'transformers.models.dpt.modular_dpt'
+148576 INFO: Analyzing hidden import 'transformers.models.edgetam.modular_edgetam'
+148580 INFO: Analyzing hidden import 'transformers.models.edgetam_video.modular_edgetam_video'
+148606 INFO: Analyzing hidden import 'transformers.models.efficientloftr.modular_efficientloftr'
+148610 INFO: Analyzing hidden import 'transformers.models.embedding_gemma2.modular_embedding_gemma2'
+148633 INFO: Analyzing hidden import 'transformers.models.emu3.modular_emu3'
+148662 INFO: Analyzing hidden import 'transformers.models.eomt.modular_eomt'
+148673 INFO: Analyzing hidden import 'transformers.models.eomt_dinov3.modular_eomt_dinov3'
+148681 INFO: Analyzing hidden import 'transformers.models.ernie.modular_ernie'
+148694 INFO: Analyzing hidden import 'transformers.models.ernie4_5.modular_ernie4_5'
+148698 INFO: Analyzing hidden import 'transformers.models.ernie4_5_moe.modular_ernie4_5_moe'
+148706 INFO: Analyzing hidden import 'transformers.models.ernie4_5_vl_moe.modular_ernie4_5_vl_moe'
+148734 INFO: Analyzing hidden import 'transformers.models.esmc.modular_esmc'
+148742 INFO: Analyzing hidden import 'transformers.models.esmfold2.modular_esmfold2'
+148806 INFO: Analyzing hidden import 'transformers.models.eurobert.modular_eurobert'
+148815 INFO: Analyzing hidden import 'transformers.models.evolla.modular_evolla'
+148835 INFO: Analyzing hidden import 'transformers.models.exaone4.modular_exaone4'
+148844 INFO: Analyzing hidden import 'transformers.models.exaone4_5.modular_exaone4_5'
+148852 INFO: Analyzing hidden import 'transformers.models.exaone_moe.modular_exaone_moe'
+148857 INFO: Analyzing hidden import 'transformers.models.falcon_h1.modular_falcon_h1'
+148873 INFO: Analyzing hidden import 'transformers.models.falcon_mamba.modular_falcon_mamba'
+148879 INFO: Analyzing hidden import 'transformers.models.fast_vlm.modular_fast_vlm'
+148885 INFO: Analyzing hidden import 'transformers.models.flex_olmo.modular_flex_olmo'
+148890 INFO: Analyzing hidden import 'transformers.models.flint.modular_flint'
+148897 INFO: Analyzing hidden import 'transformers.models.florence2.modular_florence2'
+148940 INFO: Analyzing hidden import 'transformers.models.fun_asr_nano.modular_fun_asr_nano'
+148953 INFO: Analyzing hidden import 'transformers.models.gemma.modular_gemma'
+148960 INFO: Analyzing hidden import 'transformers.models.gemma2.modular_gemma2'
+148971 INFO: Analyzing hidden import 'transformers.models.gemma3.modular_gemma3'
+148992 INFO: Analyzing hidden import 'transformers.models.gemma3n.modular_gemma3n'
+149058 INFO: Analyzing hidden import 'transformers.models.gemma4.modular_gemma4'
+149123 INFO: Analyzing hidden import 'transformers.models.gemma4_unified.modular_gemma4_unified'
+149153 INFO: Analyzing hidden import 'transformers.models.gemma4_unified_assistant.modular_gemma4_unified_assistant'
+149155 INFO: Analyzing hidden import 'transformers.models.glm.modular_glm'
+149159 INFO: Analyzing hidden import 'transformers.models.glm4.modular_glm4'
+149164 INFO: Analyzing hidden import 'transformers.models.glm46v.modular_glm46v'
+149168 INFO: Analyzing hidden import 'transformers.models.glm4_moe.modular_glm4_moe'
+149172 INFO: Analyzing hidden import 'transformers.models.glm4_moe_lite.modular_glm4_moe_lite'
+149176 INFO: Analyzing hidden import 'transformers.models.glm4v.modular_glm4v'
+149204 INFO: Analyzing hidden import 'transformers.models.glm4v_moe.modular_glm4v_moe'
+149212 INFO: Analyzing hidden import 'transformers.models.glm5_next.modular_glm5_next'
+149274 INFO: Analyzing hidden import 'transformers.models.glm_image.modular_glm_image'
+149304 INFO: Analyzing hidden import 'transformers.models.glm_moe_dsa.modular_glm_moe_dsa'
+149461 INFO: Analyzing hidden import 'transformers.models.glm_ocr.modular_glm_ocr'
+149467 INFO: Analyzing hidden import 'transformers.models.glmasr.modular_glmasr'
+149476 INFO: Analyzing hidden import 'transformers.models.glmga.modular_glmga'
+149483 INFO: Analyzing hidden import 'transformers.models.got_ocr2.modular_got_ocr2'
+149490 INFO: Analyzing hidden import 'transformers.models.gpt_neox.modular_gpt_neox'
+149504 INFO: Analyzing hidden import 'transformers.models.gpt_oss.modular_gpt_oss'
+149514 INFO: Analyzing hidden import 'transformers.models.gradium_phonon_tts.modular_gradium_phonon_tts'
+149518 INFO: Analyzing hidden import 'transformers.models.granite.modular_granite'
+149522 INFO: Analyzing hidden import 'transformers.models.granite4_vision.modular_granite4_vision'
+149541 INFO: Analyzing hidden import 'transformers.models.granite_docling.modular_granite_docling'
+149572 INFO: Analyzing hidden import 'transformers.models.granite_speech5.modular_granite_speech5'
+149582 INFO: Analyzing hidden import 'transformers.models.granite_speech_plus.modular_granite_speech_plus'
+149586 INFO: Analyzing hidden import 'transformers.models.granite_swa.modular_granite_swa'
+149593 INFO: Analyzing hidden import 'transformers.models.granitemoe.modular_granitemoe'
+149600 INFO: Analyzing hidden import 'transformers.models.granitemoe_swa.modular_granitemoe_swa'
+149605 INFO: Analyzing hidden import 'transformers.models.granitemoehybrid.modular_granitemoehybrid'
+149611 INFO: Analyzing hidden import 'transformers.models.granitemoeshared.modular_granitemoeshared'
+149615 INFO: Analyzing hidden import 'transformers.models.grounding_dino.modular_grounding_dino'
+149619 INFO: Analyzing hidden import 'transformers.models.gte.modular_gte'
+149623 INFO: Analyzing hidden import 'transformers.models.helium.modular_helium'
+149627 INFO: Analyzing hidden import 'transformers.models.hgnet_v2.modular_hgnet_v2'
+149639 INFO: Analyzing hidden import 'transformers.models.higgs_audio_v2.modular_higgs_audio_v2'
+149649 INFO: Analyzing hidden import 'transformers.models.higgs_audio_v2_tokenizer.modular_higgs_audio_v2_tokenizer'
+149652 INFO: Analyzing hidden import 'transformers.models.hrm_text.modular_hrm_text'
+149661 INFO: Analyzing hidden import 'transformers.models.hubert.modular_hubert'
+149668 INFO: Analyzing hidden import 'transformers.models.hunyuan_v1_dense.modular_hunyuan_v1_dense'
+149672 INFO: Analyzing hidden import 'transformers.models.hunyuan_v1_moe.modular_hunyuan_v1_moe'
+149677 INFO: Analyzing hidden import 'transformers.models.hunyuan_vl.modular_hunyuan_vl'
+149711 INFO: Analyzing hidden import 'transformers.models.hy_v3.modular_hy_v3'
+149719 INFO: Analyzing hidden import 'transformers.models.hy_v4.modular_hy_v4'
+149733 INFO: Analyzing hidden import 'transformers.models.hyperclovax.modular_hyperclovax'
+149737 INFO: Analyzing hidden import 'transformers.models.hyperclovax_vision_v2.modular_hyperclovax_vision_v2'
+149745 INFO: Analyzing hidden import 'transformers.models.ijepa.modular_ijepa'
+149749 INFO: Analyzing hidden import 'transformers.models.informer.modular_informer'
+149761 INFO: Analyzing hidden import 'transformers.models.inkling.modular_inkling'
+149797 INFO: Analyzing hidden import 'transformers.models.inkling2.modular_inkling2'
+149837 INFO: Analyzing hidden import 'transformers.models.instructblipvideo.modular_instructblipvideo'
+149847 INFO: Analyzing hidden import 'transformers.models.internlm3.modular_internlm3'
+149849 INFO: Analyzing hidden import 'transformers.models.internvl.modular_internvl'
+149864 INFO: Analyzing hidden import 'transformers.models.iquestcoder.modular_iquestcoder'
+149866 INFO: Analyzing hidden import 'transformers.models.jais2.modular_jais2'
+149868 INFO: Analyzing hidden import 'transformers.models.jamba.modular_jamba'
+149882 INFO: Analyzing hidden import 'transformers.models.janus.modular_janus'
+149907 INFO: Analyzing hidden import 'transformers.models.jetmoe.modular_jetmoe'
+149920 INFO: Analyzing hidden import 'transformers.models.jina_embeddings_v3.modular_jina_embeddings_v3'
+149928 INFO: Analyzing hidden import 'transformers.models.kimi_k25.modular_kimi_k25'
+149949 INFO: Analyzing hidden import 'transformers.models.kimi_linear.modular_kimi_linear'
+149959 INFO: Analyzing hidden import 'transformers.models.kolibri1.modular_kolibri1'
+149964 INFO: Analyzing hidden import 'transformers.models.kyutai_speech_to_text.modular_kyutai_speech_to_text'
+149975 INFO: Analyzing hidden import 'transformers.models.laguna.modular_laguna'
+149986 INFO: Analyzing hidden import 'transformers.models.lasr.modular_lasr'
+150000 INFO: Analyzing hidden import 'transformers.models.layoutxlm.modular_layoutxlm'
+150001 INFO: Analyzing hidden import 'transformers.models.lfm2.modular_lfm2'
+150009 INFO: Analyzing hidden import 'transformers.models.lfm2_moe.modular_lfm2_moe'
+150015 INFO: Analyzing hidden import 'transformers.models.lfm2_vl.modular_lfm2_vl'
+150021 INFO: Analyzing hidden import 'transformers.models.lfm3.modular_lfm3'
+150032 INFO: Analyzing hidden import 'transformers.models.lfm3_vl.modular_lfm3_vl'
+150046 INFO: Analyzing hidden import 'transformers.models.lightglue.modular_lightglue'
+150068 INFO: Analyzing hidden import 'transformers.models.lighton_ocr.modular_lighton_ocr'
+150076 INFO: Analyzing hidden import 'transformers.models.llava_next_video.modular_llava_next_video'
+150087 INFO: Analyzing hidden import 'transformers.models.llava_onevision.modular_llava_onevision'
+150108 INFO: Analyzing hidden import 'transformers.models.longcat_flash.modular_longcat_flash'
+150121 INFO: Analyzing hidden import 'transformers.models.lw_detr.modular_lw_detr'
+150160 INFO: Analyzing hidden import 'transformers.models.mask2former.modular_mask2former'
+150170 INFO: Analyzing hidden import 'transformers.models.maskformer.modular_maskformer'
+150201 INFO: Analyzing hidden import 'transformers.models.mellum.modular_mellum'
+150205 INFO: Analyzing hidden import 'transformers.models.metaclip_2.modular_metaclip_2'
+150211 INFO: Analyzing hidden import 'transformers.models.mimo_v2_flash.modular_mimo_v2_flash'
+150220 INFO: Analyzing hidden import 'transformers.models.minicpm3.modular_minicpm3'
+150226 INFO: Analyzing hidden import 'transformers.models.minicpm_ocr.modular_minicpm_ocr'
+150234 INFO: Analyzing hidden import 'transformers.models.minicpmv4_6.modular_minicpmv4_6'
+150261 INFO: Analyzing hidden import 'transformers.models.minicpmv4_7.modular_minicpmv4_7'
+150278 INFO: Analyzing hidden import 'transformers.models.minimax.modular_minimax'
+150291 INFO: Analyzing hidden import 'transformers.models.minimax_m2.modular_minimax_m2'
+150298 INFO: Analyzing hidden import 'transformers.models.minimax_m3_vl.modular_minimax_m3_vl'
+150343 INFO: Analyzing hidden import 'transformers.models.ministral.modular_ministral'
+150347 INFO: Analyzing hidden import 'transformers.models.ministral3.modular_ministral3'
+150350 INFO: Analyzing hidden import 'transformers.models.mistral.modular_mistral'
+150355 INFO: Analyzing hidden import 'transformers.models.mistral3.modular_mistral3'
+150364 INFO: Analyzing hidden import 'transformers.models.mistral4.modular_mistral4'
+150372 INFO: Analyzing hidden import 'transformers.models.mistral_large4.modular_mistral_large4'
+150398 INFO: Analyzing hidden import 'transformers.models.mixtral.modular_mixtral'
+150410 INFO: Analyzing hidden import 'transformers.models.mlcd.modular_mlcd'
+150419 INFO: Analyzing hidden import 'transformers.models.mm_grounding_dino.modular_mm_grounding_dino'
+150425 INFO: Analyzing hidden import 'transformers.models.modernbert.modular_modernbert'
+150459 INFO: Analyzing hidden import 'transformers.models.modernbert_decoder.modular_modernbert_decoder'
+150479 INFO: Analyzing hidden import 'transformers.models.modernvbert.modular_modernvbert'
+150491 INFO: Analyzing hidden import 'transformers.models.molmo2.modular_molmo2'
+150544 INFO: Analyzing hidden import 'transformers.models.moonshine.modular_moonshine'
+150563 INFO: Analyzing hidden import 'transformers.models.moonshine_streaming.modular_moonshine_streaming'
+150577 INFO: Analyzing hidden import 'transformers.models.moss_transcribe_diarize.modular_moss_transcribe_diarize'
+150593 INFO: Analyzing hidden import 'transformers.models.muse_glimmer.modular_muse_glimmer'
+150620 INFO: Analyzing hidden import 'transformers.models.muse_glimmer_assistant.modular_muse_glimmer_assistant'
+150627 INFO: Analyzing hidden import 'transformers.models.muse_spark.modular_muse_spark'
+150657 INFO: Analyzing hidden import 'transformers.models.musicflamingo.modular_musicflamingo'
+150668 INFO: Analyzing hidden import 'transformers.models.nanochat.modular_nanochat'
+150673 INFO: Analyzing hidden import 'transformers.models.nemotron3_5_asr.modular_nemotron3_5_asr'
+150682 INFO: Analyzing hidden import 'transformers.models.nemotron3_5_transcribe.modular_nemotron3_5_transcribe'
+150701 INFO: Analyzing hidden import 'transformers.models.nemotron3_diarization.modular_nemotron3_diarization'
+150723 INFO: Analyzing hidden import 'transformers.models.nemotron_asr_streaming.modular_nemotron_asr_streaming'
+150746 INFO: Analyzing hidden import 'transformers.models.nemotron_h.modular_nemotron_h'
+150758 INFO: Analyzing hidden import 'transformers.models.nemotron_h_omni.modular_nemotron_h_omni'
+150771 INFO: Analyzing hidden import 'transformers.models.neomme.modular_neomme'
+150799 INFO: Analyzing hidden import 'transformers.models.neucodec.modular_neucodec'
+150807 INFO: Analyzing hidden import 'transformers.models.nomic_bert.modular_nomic_bert'
+150816 INFO: Analyzing hidden import 'transformers.models.olmo.modular_olmo'
+150823 INFO: Analyzing hidden import 'transformers.models.olmo2.modular_olmo2'
+150829 INFO: Analyzing hidden import 'transformers.models.olmo3.modular_olmo3'
+150837 INFO: Analyzing hidden import 'transformers.models.olmo_hybrid.modular_olmo_hybrid'
+150854 INFO: Analyzing hidden import 'transformers.models.olmoe.modular_olmoe'
+150865 INFO: Analyzing hidden import 'transformers.models.openai_privacy_filter.modular_openai_privacy_filter'
+150878 INFO: Analyzing hidden import 'transformers.models.ovis2.modular_ovis2'
+150889 INFO: Analyzing hidden import 'transformers.models.owlv2.modular_owlv2'
+150900 INFO: Analyzing hidden import 'transformers.models.paddleocr_vl.modular_paddleocr_vl'
+150921 INFO: Analyzing hidden import 'transformers.models.parakeet.modular_parakeet'
+150944 INFO: Analyzing hidden import 'transformers.models.pe_audio.modular_pe_audio'
+150952 INFO: Analyzing hidden import 'transformers.models.pe_audio_video.modular_pe_audio_video'
+150976 INFO: Analyzing hidden import 'transformers.models.pe_video.modular_pe_video'
+150983 INFO: Analyzing hidden import 'transformers.models.perception_lm.modular_perception_lm'
+150991 INFO: Analyzing hidden import 'transformers.models.phi.modular_phi'
+150998 INFO: Analyzing hidden import 'transformers.models.phi3.modular_phi3'
+151006 INFO: Analyzing hidden import 'transformers.models.phi4_multimodal.modular_phi4_multimodal'
+151051 INFO: Analyzing hidden import 'transformers.models.phimoe.modular_phimoe'
+151058 INFO: Analyzing hidden import 'transformers.models.pi0.modular_pi0'
+151076 INFO: Analyzing hidden import 'transformers.models.pixio.modular_pixio'
+151083 INFO: Analyzing hidden import 'transformers.models.plbart.modular_plbart'
+151090 INFO: Analyzing hidden import 'transformers.models.pocket_tts.modular_pocket_tts'
+151105 INFO: Analyzing hidden import 
+'transformers.models.pocket_tts_audio_tokenizer.modular_pocket_tts_audio_tokenizer'
+151111 INFO: Analyzing hidden import 'transformers.models.pp_chart2table.modular_pp_chart2table'
+151113 INFO: Analyzing hidden import 'transformers.models.pp_doclayout_v2.modular_pp_doclayout_v2'
+151132 INFO: Analyzing hidden import 'transformers.models.pp_doclayout_v3.modular_pp_doclayout_v3'
+151165 INFO: Analyzing hidden import 'transformers.models.pp_doclayout_v4.modular_pp_doclayout_v4'
+151182 INFO: Analyzing hidden import 'transformers.models.pp_formulanet.modular_pp_formulanet'
+151191 INFO: Analyzing hidden import 'transformers.models.pp_lcnet.modular_pp_lcnet'
+151203 INFO: Analyzing hidden import 'transformers.models.pp_lcnet_v3.modular_pp_lcnet_v3'
+151208 INFO: Analyzing hidden import 'transformers.models.pp_lcnet_v4.modular_pp_lcnet_v4'
+151213 INFO: Analyzing hidden import 'transformers.models.pp_ocrv5_mobile_det.modular_pp_ocrv5_mobile_det'
+151219 INFO: Analyzing hidden import 'transformers.models.pp_ocrv5_mobile_rec.modular_pp_ocrv5_mobile_rec'
+151220 INFO: Analyzing hidden import 'transformers.models.pp_ocrv5_server_det.modular_pp_ocrv5_server_det'
+151241 INFO: Analyzing hidden import 'transformers.models.pp_ocrv5_server_rec.modular_pp_ocrv5_server_rec'
+151257 INFO: Analyzing hidden import 'transformers.models.pp_ocrv6_medium_det.modular_pp_ocrv6_medium_det'
+151261 INFO: Analyzing hidden import 'transformers.models.pp_ocrv6_small_det.modular_pp_ocrv6_small_det'
+151264 INFO: Analyzing hidden import 'transformers.models.pp_ocrv6_small_rec.modular_pp_ocrv6_small_rec'
+151269 INFO: Analyzing hidden import 'transformers.models.pp_ocrv6_tiny_rec.modular_pp_ocrv6_tiny_rec'
+151272 INFO: Analyzing hidden import 'transformers.models.prompt_depth_anything.modular_prompt_depth_anything'
+151279 INFO: Analyzing hidden import 'transformers.models.qianfan_ocr.modular_qianfan_ocr'
+151286 INFO: Analyzing hidden import 'transformers.models.qwen2.modular_qwen2'
+151291 INFO: Analyzing hidden import 'transformers.models.qwen2_5_omni.modular_qwen2_5_omni'
+151388 INFO: Analyzing hidden import 'transformers.models.qwen2_5_vl.modular_qwen2_5_vl'
+151406 INFO: Analyzing hidden import 'transformers.models.qwen2_moe.modular_qwen2_moe'
+151414 INFO: Analyzing hidden import 'transformers.models.qwen3.modular_qwen3'
+151419 INFO: Analyzing hidden import 'transformers.models.qwen3_5.modular_qwen3_5'
+151435 INFO: Analyzing hidden import 'transformers.models.qwen3_5_moe.modular_qwen3_5_moe'
+151448 INFO: Analyzing hidden import 'transformers.models.qwen3_asr.modular_qwen3_asr'
+151453 INFO: Analyzing hidden import 'transformers.models.qwen3_moe.modular_qwen3_moe'
+151456 INFO: Analyzing hidden import 'transformers.models.qwen3_next.modular_qwen3_next'
+151479 INFO: Analyzing hidden import 'transformers.models.qwen3_omni_moe.modular_qwen3_omni_moe'
+151546 INFO: Analyzing hidden import 'transformers.models.qwen3_vl.modular_qwen3_vl'
+151571 INFO: Analyzing hidden import 'transformers.models.qwen3_vl_moe.modular_qwen3_vl_moe'
+151579 INFO: Analyzing hidden import 'transformers.models.qwen4_exp.modular_qwen4_exp'
+151610 INFO: Analyzing hidden import 'transformers.models.radio.modular_radio'
+151622 INFO: Analyzing hidden import 'transformers.models.rf_detr.modular_rf_detr'
+151650 INFO: Analyzing hidden import 'transformers.models.roberta.modular_roberta'
+151662 INFO: Analyzing hidden import 'transformers.models.rt_detr.modular_rt_detr'
+151861 INFO: Analyzing hidden import 'transformers.models.rt_detr_v2.modular_rt_detr_v2'
+151871 INFO: Analyzing hidden import 'transformers.models.sam2.modular_sam2'
+151903 INFO: Analyzing hidden import 'transformers.models.sam2_video.modular_sam2_video'
+151959 INFO: Analyzing hidden import 'transformers.models.sam3.modular_sam3'
+151964 INFO: Analyzing hidden import 'transformers.models.sam3_lite_text.modular_sam3_lite_text'
+151973 INFO: Analyzing hidden import 'transformers.models.sam3_tracker.modular_sam3_tracker'
+151977 INFO: Analyzing hidden import 'transformers.models.sam3_tracker_video.modular_sam3_tracker_video'
+151985 INFO: Analyzing hidden import 'transformers.models.sam_hq.modular_sam_hq'
+151999 INFO: Analyzing hidden import 'transformers.models.sapiens2.modular_sapiens2'
+152062 INFO: Analyzing hidden import 'transformers.models.seed_oss.modular_seed_oss'
+152068 INFO: Analyzing hidden import 'transformers.models.segformer.modular_segformer'
+152086 INFO: Analyzing hidden import 'transformers.models.sew.modular_sew'
+152097 INFO: Analyzing hidden import 'transformers.models.shieldgemma2.modular_shieldgemma2'
+152102 INFO: Analyzing hidden import 'transformers.models.siglip2.modular_siglip2'
+152111 INFO: Analyzing hidden import 'transformers.models.slanet.modular_slanet'
+152120 INFO: Analyzing hidden import 'transformers.models.slanext.modular_slanext'
+152133 INFO: Analyzing hidden import 'transformers.models.smollm3.modular_smollm3'
+152139 INFO: Analyzing hidden import 'transformers.models.smolvlm.modular_smolvlm'
+152146 INFO: Analyzing hidden import 'transformers.models.solar_open.modular_solar_open'
+152150 INFO: Analyzing hidden import 'transformers.models.starcoder2.modular_starcoder2'
+152156 INFO: Analyzing hidden import 'transformers.models.step3p7.modular_step3p7'
+152191 INFO: Analyzing hidden import 'transformers.models.swin.modular_swin'
+152220 INFO: Analyzing hidden import 'transformers.models.switch_transformers.modular_switch_transformers'
+152240 INFO: Analyzing hidden import 'transformers.models.t5gemma.modular_t5gemma'
+152274 INFO: Analyzing hidden import 'transformers.models.t5gemma2.modular_t5gemma2'
+152303 INFO: Analyzing hidden import 'transformers.models.timesfm.modular_timesfm'
+152326 INFO: Analyzing hidden import 'transformers.models.timesfm2_5.modular_timesfm2_5'
+152346 INFO: Analyzing hidden import 'transformers.models.tipsv2.modular_tipsv2'
+152365 INFO: Analyzing hidden import 'transformers.models.tipsv2_dpt.modular_tipsv2_dpt'
+152383 INFO: Analyzing hidden import 'transformers.models.ultrabert.modular_ultrabert'
+152395 INFO: Analyzing hidden import 'transformers.models.ultravbert.modular_ultravbert'
+152406 INFO: Analyzing hidden import 'transformers.models.unispeech.modular_unispeech'
+152415 INFO: Analyzing hidden import 'transformers.models.unispeech_sat.modular_unispeech_sat'
+152423 INFO: Analyzing hidden import 'transformers.models.unlimited_ocr.modular_unlimited_ocr'
+152458 INFO: Analyzing hidden import 'transformers.models.uvdoc.modular_uvdoc'
+152472 INFO: Analyzing hidden import 'transformers.models.vaultgemma.modular_vaultgemma'
+152476 INFO: Analyzing hidden import 'transformers.models.vibevoice.modular_vibevoice'
+152491 INFO: Analyzing hidden import 
+'transformers.models.vibevoice_acoustic_tokenizer.modular_vibevoice_acoustic_tokenizer'
+152504 INFO: Analyzing hidden import 'transformers.models.vibevoice_asr.modular_vibevoice_asr'
+152513 INFO: Analyzing hidden import 'transformers.models.video_llama_3.modular_video_llama_3'
+152541 INFO: Analyzing hidden import 'transformers.models.videomt.modular_videomt'
+152547 INFO: Analyzing hidden import 'transformers.models.videoprism.modular_videoprism'
+152568 INFO: Analyzing hidden import 'transformers.models.vipllava.modular_vipllava'
+152573 INFO: Analyzing hidden import 'transformers.models.vit_mae.modular_vit_mae'
+152585 INFO: Analyzing hidden import 'transformers.models.vit_msn.modular_vit_msn'
+152588 INFO: Analyzing hidden import 'transformers.models.vivit.modular_vivit'
+152594 INFO: Analyzing hidden import 'transformers.models.voxtral.modular_voxtral'
+152601 INFO: Analyzing hidden import 'transformers.models.voxtral_realtime.modular_voxtral_realtime'
+152619 INFO: Analyzing hidden import 'transformers.models.wav2vec2_bert.modular_wav2vec2_bert'
+152640 INFO: Analyzing hidden import 'transformers.models.wav2vec2_conformer.modular_wav2vec2_conformer'
+152658 INFO: Analyzing hidden import 'transformers.models.wavlm.modular_wavlm'
+152671 INFO: Analyzing hidden import 'transformers.models.x_clip.modular_x_clip'
+152684 INFO: Analyzing hidden import 'transformers.models.xcodec2.modular_xcodec2'
+152703 INFO: Analyzing hidden import 'transformers.models.xlm_roberta.modular_xlm_roberta'
+152714 INFO: Analyzing hidden import 'transformers.models.xlm_roberta_xl.modular_xlm_roberta_xl'
+152732 INFO: Analyzing hidden import 'transformers.models.yolos.modular_yolos'
+152739 INFO: Analyzing hidden import 'transformers.models.youtu.modular_youtu'
+152743 INFO: Analyzing hidden import 'transformers.models.zamba2.modular_zamba2'
+152757 INFO: Analyzing hidden import 'transformers.models.zaya.modular_zaya'
+152775 INFO: Analyzing hidden import 'transformers.testing_utils'
+152902 INFO: Analyzing hidden import 'transformers.utils.attention_visualizer'
+152909 INFO: Analyzing hidden import 'transformers.utils.backbone_utils'
+152910 INFO: Analyzing hidden import 'transformers.utils.dummy_detectron2_objects'
+152911 INFO: Analyzing hidden import 
+'transformers.utils.dummy_essentia_and_librosa_and_pretty_midi_and_scipy_and_torch_objects'
+152912 INFO: Analyzing hidden import 'transformers.utils.dummy_music_objects'
+152913 INFO: Analyzing hidden import 'transformers.utils.dummy_speech_objects'
+152914 INFO: Analyzing hidden import 'transformers.utils.dummy_timm_and_torchvision_objects'
+152915 INFO: Analyzing hidden import 'transformers.utils.dummy_torchaudio_objects'
+152916 INFO: Analyzing hidden import 'transformers.utils.hp_naming'
+152919 INFO: Analyzing hidden import 'transformers.utils.network_logging'
+152931 INFO: Analyzing hidden import 'transformers.utils.pytest_helpers'
+152934 INFO: Processing module hooks (post-graph stage)...
+159760 WARNING: Hidden import "tzdata" not found!
+161803 INFO: Processing standard module hook 'hook-_tkinter.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+162150 INFO: Performing binary vs. data reclassification (4132 entries)
+162515 INFO: Looking for ctypes DLLs
+162627 WARNING: Ignoring /usr/lib64/libgomp.so.1 imported from 
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\torch\_inductor\codecache.py - only basenames 
+are supported with ctypes imports!
+162945 INFO: Analyzing run-time hooks ...
+162991 INFO: Including run-time hook 'pyi_rth_inspect.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+162995 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163000 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163004 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163009 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163294 INFO: Creating base_library.zip...
+163322 INFO: Looking for dynamic libraries
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\building\build_main.py:227: 
+DeprecationWarning: `torch.distributed._sharding_spec` will be deprecated, use 
+`torch.distributed._shard.sharding_spec` instead
+  __import__(package)
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\building\build_main.py:227: 
+DeprecationWarning: `torch.distributed._sharded_tensor` will be deprecated, use 
+`torch.distributed._shard.sharded_tensor` instead
+  __import__(package)
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\building\build_main.py:227: 
+DeprecationWarning: `torch.distributed._shard.checkpoint` will be deprecated, use `torch.distributed.checkpoint` 
+instead
+  __import__(package)
+174098 INFO: Extra DLL search directories (AddDllDirectory): 
+['C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\torch\\lib', 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\numpy.libs', 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\av.libs', 
+'C:\\Users\\EihceK\\Documents\\GitHub\\fb-transcriber\\.venv\\Lib\\site-packages\\ctranslate2']
+174098 INFO: Extra DLL search directories (PATH): []
+175418 INFO: Warnings written to 
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\build\FBLiveTranscriber\warn-FBLiveTranscriber.txt
+176423 INFO: Graph cross-reference written to 
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\build\FBLiveTranscriber\xref-FBLiveTranscriber.html
+176704 INFO: checking PYZ
+176837 INFO: checking PKG
+176838 INFO: Building because C:\Users\EihceK\Documents\GitHub\fb-transcriber\app.py changed
+176838 INFO: Building PKG (CArchive) FBLiveTranscriber.pkg
+176906 INFO: Building PKG (CArchive) FBLiveTranscriber.pkg completed successfully.
+176908 INFO: Bootloader C:\Users\EihceK\Documents\GitHub\fb-transcriber\.venv\Lib\site-packages\PyInstaller\bootloader\
+Windows-64bit-intel\runw.exe
+176908 INFO: checking EXE
+176908 INFO: Rebuilding EXE-00.toc because pkg is more recent
+176908 INFO: Building EXE from EXE-00.toc
+176914 INFO: Copying bootloader EXE to 
+C:\Users\EihceK\Documents\GitHub\fb-transcriber\build\FBLiveTranscriber\FBLiveTranscriber.exe
+176951 INFO: Copying icon to EXE
+176988 INFO: Copying 0 resources to EXE
+176988 INFO: Embedding manifest in EXE
+177026 INFO: Appending PKG archive to EXE
+177088 INFO: Fixing EXE headers
+177712 INFO: Building EXE from EXE-00.toc completed successfully.
+177770 INFO: checking COLLECT
+177842 INFO: Removing dir C:\Users\EihceK\Documents\GitHub\fb-transcriber\dist\FBLiveTranscriber
+179436 INFO: Building COLLECT COLLECT-00.toc
+185615 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+185715 INFO: Build complete! The results are available in: C:\Users\EihceK\Documents\GitHub\fb-transcriber\dist
+
+Done: dist\FBLiveTranscriber\FBLiveTranscriber.exe

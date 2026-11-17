@@ -33,6 +33,53 @@ def fmt_ts(s):
     return str(datetime.timedelta(seconds=int(s)))
 
 
+def hf_download(repo_id, allow_patterns, report):
+    """Download a Hugging Face repo snapshot, calling report(done_bytes, total_bytes) as it goes.
+    Falls back to the local cache if offline. Returns the local directory."""
+    import io, threading
+    from huggingface_hub import snapshot_download
+    from huggingface_hub.utils import tqdm as hf_tqdm
+
+    lock = threading.Lock()
+    bars = {}  # id(bar) -> [done, total]
+    last = [0.0]
+
+    def push(force=False):
+        now = time.time()
+        if not force and now - last[0] < 0.1:
+            return
+        last[0] = now
+        report(sum(b[0] for b in bars.values()), sum(b[1] for b in bars.values()))
+
+    class Bar(hf_tqdm):
+        def __init__(self, *a, **k):
+            k["file"] = io.StringIO()  # no console in the windowed exe
+            super().__init__(*a, **k)
+            self.is_bytes = k.get("unit") == "B"
+            if self.is_bytes:
+                with lock:
+                    bars[id(self)] = [k.get("initial") or 0, k.get("total") or 0]
+
+        def update(self, n=1):
+            r = super().update(n)
+            if self.is_bytes and n:
+                with lock:
+                    b = bars[id(self)]
+                    b[0] += n
+                    if self.total:
+                        b[1] = self.total
+                    push()
+            return r
+
+    try:
+        path = snapshot_download(repo_id, allow_patterns=allow_patterns, tqdm_class=Bar)
+        report(1, 1)  # finished: lets the UI hide the bar
+        return path
+    except Exception:
+        report(1, 1)
+        return snapshot_download(repo_id, allow_patterns=allow_patterns, local_files_only=True)
+
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -87,6 +134,7 @@ class App(tk.Tk):
         self.status = tk.StringVar(value="Idle")
         foot = ttk.Frame(self); foot.pack(fill="x", padx=8, pady=(0, 6))
         ttk.Label(foot, textvariable=self.status, anchor="w").pack(side="left")
+        self.pbar = ttk.Progressbar(foot, length=180, mode="determinate", maximum=100)  # shown only while downloading
         ttk.Label(foot, text="\u00a9 2026 eihcek. Non-commercial use only.", foreground="gray").pack(side="right")
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.after(150, self.poll)
@@ -114,7 +162,18 @@ class App(tk.Tk):
                     self.check_line(i); self.out.see("end")
                 elif kind == "status":
                     self.status.set(val)
+                elif kind == "progress":
+                    done, total = val
+                    if total and done < total:
+                        if not self.pbar.winfo_ismapped():
+                            self.pbar.pack(side="left", padx=8)
+                        self.pbar["value"] = 100.0 * done / total
+                        self.status.set(f"Downloading model: {done / 1e6:,.0f} / {total / 1e6:,.0f} MB "
+                                        f"({100.0 * done / total:.0f}%)")
+                    else:
+                        self.pbar.pack_forget()
                 elif kind == "done":
+                    self.pbar.pack_forget()
                     self.btn.config(text="Start")
                 elif kind == "error":
                     messagebox.showerror("Error", val)
@@ -239,14 +298,20 @@ class App(tk.Tk):
     # ---- worker
     def run(self):
         try:
-            self.q.put(("status", "Loading model (first run downloads it)..."))
+            self.q.put(("status", "Checking model files (first run downloads them)..."))
             import numpy as np
             if self.is_mms():
                 import torch
                 from transformers import Wav2Vec2ForCTC, AutoProcessor
                 code = MMS_LANGS[self.lang.get()]
-                proc = AutoProcessor.from_pretrained("facebook/mms-1b-all", target_lang=code)
-                mms = Wav2Vec2ForCTC.from_pretrained("facebook/mms-1b-all", target_lang=code,
+                mms_dir = hf_download("facebook/mms-1b-all",
+                                      ["config.json", "preprocessor_config.json", "special_tokens_map.json",
+                                       "tokenizer_config.json", "vocab.json", "model.safetensors",
+                                       f"adapter.{code}.safetensors"],
+                                      lambda d, t: self.q.put(("progress", (d, t))))
+                self.q.put(("status", "Loading MMS model into memory (can take a minute)..."))
+                proc =AutoProcessor.from_pretrained(mms_dir, target_lang=code)
+                mms = Wav2Vec2ForCTC.from_pretrained(mms_dir, target_lang=code,
                                                      ignore_mismatched_sizes=True).eval()
 
                 mms_lang = {"eng": "en"}.get(code)  # spellcheck language
@@ -261,10 +326,16 @@ class App(tk.Tk):
                     return ([(0.0, dur, txt)] if txt else []), mms_lang
             else:
                 from faster_whisper import WhisperModel
+                model_dir = hf_download(f"Systran/faster-whisper-{self.model.get()}",
+                                        ["config.json", "preprocessor_config.json", "model.bin",
+                                         "tokenizer.json", "vocabulary.*"],
+                                        lambda d, t: self.q.put(("progress", (d, t))))
+                self.q.put(("status", f"Loading Whisper {self.model.get()} into memory..."))
+
                 def cpu_model():
-                    return WhisperModel(self.model.get(), device="cpu", compute_type="int8")
+                    return WhisperModel(model_dir, device="cpu", compute_type="int8")
                 try:
-                    wm = WhisperModel(self.model.get(), device="auto", compute_type="auto")
+                    wm = WhisperModel(model_dir, device="auto", compute_type="auto")
                 except Exception:
                     wm = cpu_model()
                 lang = WHISPER_LANGS[self.lang.get()]
@@ -292,22 +363,28 @@ class App(tk.Tk):
             ffcmd = [find_tool("ffmpeg"), "-loglevel", "error", "-i", "pipe:0", "-vn",
                      "-f", "s16le", "-ac", "1", "-ar", str(SAMPLE_RATE), "pipe:1"]
 
+            self.q.put(("status", "Model ready. Opening stream..."))
             yt = subprocess.Popen(ytcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=NOWIN)
             ff = subprocess.Popen(ffcmd, stdin=yt.stdout, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, creationflags=NOWIN)
             yt.stdout.close()
             self.procs = [yt, ff]
-            self.q.put(("status", "Listening..."))
+            self.q.put(("status", "Connecting to stream (yt-dlp)..."))
 
             chunk_bytes = SAMPLE_RATE * 2 * CHUNK_SECONDS
             offset = 0.0
+            first = True
             while not self.stop_evt.is_set():
                 buf = b""
                 while len(buf) < chunk_bytes:
                     d = ff.stdout.read(chunk_bytes - len(buf))
                     if not d: break
+                    if first:
+                        first = False
+                        self.q.put(("status", f"Stream open. Buffering first {CHUNK_SECONDS}s of audio..."))
                     buf += d
                 if len(buf) < SAMPLE_RATE * 2:  # <1s => stream ended
                     break
+                self.q.put(("status", f"Transcribing audio from {fmt_ts(offset)}..."))
                 audio = np.frombuffer(buf, np.int16).astype(np.float32) / 32768.0
                 segs, seg_lang = transcribe(audio, len(buf) / 2 / SAMPLE_RATE)
                 for st, en, txt in segs:
@@ -316,7 +393,7 @@ class App(tk.Tk):
                         self.lines.append((a, b, txt))
                         self.q.put(("text", (len(self.lines) - 1, f"[{fmt_ts(a)}] {txt}", seg_lang)))
                 offset += len(buf) / 2 / SAMPLE_RATE
-                self.q.put(("status", f"Transcribed {fmt_ts(offset)} of stream"))
+                self.q.put(("status", f"Listening... transcribed {fmt_ts(offset)} of stream"))
 
             if not self.stop_evt.is_set():
                 try: yt.wait(timeout=3)
