@@ -29,6 +29,20 @@ def find_tool(name):
     return shutil.which(name)
 
 
+def parse_time(s):
+    """'' -> None; '90', '1:30' or '1:02:03' -> seconds. Raises ValueError if malformed."""
+    s = s.strip()
+    if not s:
+        return None
+    parts = s.split(":")
+    if len(parts) > 3 or not all(re.fullmatch(r"\d+(\.\d+)?", p) for p in parts):
+        raise ValueError(f"Invalid time '{s}'. Use seconds, mm:ss or h:mm:ss.")
+    secs = 0.0
+    for p in parts:
+        secs = secs * 60 + float(p)
+    return secs
+
+
 def fmt_ts(s):
     return str(datetime.timedelta(seconds=int(s)))
 
@@ -126,6 +140,15 @@ class App(tk.Tk):
         self.spellcheck = tk.BooleanVar(value=False)
         ttk.Checkbutton(top, text="Spellcheck", variable=self.spellcheck,
                         command=self.recheck_all).grid(row=3, column=6, padx=(8, 0))
+
+        rng = ttk.Frame(top); rng.grid(row=4, column=0, columnspan=7, sticky="w", pady=(6, 0))
+        self.t_start = tk.StringVar(); self.t_end = tk.StringVar()
+        ttk.Label(rng, text="Start").pack(side="left")
+        ttk.Entry(rng, textvariable=self.t_start, width=10).pack(side="left", padx=(4, 12))
+        ttk.Label(rng, text="End").pack(side="left")
+        ttk.Entry(rng, textvariable=self.t_end, width=10).pack(side="left", padx=(4, 8))
+        ttk.Label(rng, text="(h:mm:ss, mm:ss or seconds; blank = whole video. Recorded videos only, not live)",
+                  foreground="gray").pack(side="left")
 
         self.out = scrolledtext.ScrolledText(self, wrap="word", font=("Segoe UI", 11))
         self.out.pack(fill="both", expand=True, padx=8, pady=4)
@@ -265,6 +288,12 @@ class App(tk.Tk):
         for t in ("yt-dlp", "ffmpeg"):
             if not find_tool(t):
                 messagebox.showerror("Missing tool", f"{t} not found. Put {t}.exe in the app's bin folder."); return
+        try:
+            self.start_s = parse_time(self.t_start.get()); self.end_s = parse_time(self.t_end.get())
+        except ValueError as e:
+            messagebox.showwarning("Invalid time", str(e)); return
+        if self.start_s is not None and self.end_s is not None and self.end_s <= self.start_s:
+            messagebox.showwarning("Invalid time", "End time must be after start time."); return
         self.stop_evt.clear(); self.lines.clear(); self.line_langs.clear(); self.out.delete("1.0", "end")
         self.btn.config(text="Stop")
         self.worker = threading.Thread(target=self.run, daemon=True); self.worker.start()
@@ -360,7 +389,13 @@ class App(tk.Tk):
                      "-o", "-", self.url.get().strip()]
             if self.cookies.get() != "none":
                 ytcmd[1:1] = ["--cookies-from-browser", self.cookies.get()]
-            ffcmd = [find_tool("ffmpeg"), "-loglevel", "error", "-i", "pipe:0", "-vn",
+            start_s, end_s = self.start_s or 0.0, self.end_s
+            trim = []  # output-side trim: decodes and discards audio before start, stops at end
+            if start_s:
+                trim += ["-ss", f"{start_s:.3f}"]
+            if end_s is not None:
+                trim += ["-t", f"{end_s - start_s:.3f}"]
+            ffcmd = [find_tool("ffmpeg"), "-loglevel", "error", "-i", "pipe:0", "-vn", *trim,
                      "-f", "s16le", "-ac", "1", "-ar", str(SAMPLE_RATE), "pipe:1"]
 
             self.q.put(("status", "Model ready. Opening stream..."))
@@ -371,8 +406,10 @@ class App(tk.Tk):
             self.q.put(("status", "Connecting to stream (yt-dlp)..."))
 
             chunk_bytes = SAMPLE_RATE * 2 * CHUNK_SECONDS
-            offset = 0.0
+            offset = start_s  # transcript timestamps are video time, not time since start
             first = True
+            if start_s:
+                self.q.put(("status", f"Connecting to stream and skipping to {fmt_ts(start_s)}..."))
             while not self.stop_evt.is_set():
                 buf = b""
                 while len(buf) < chunk_bytes:
