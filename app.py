@@ -293,7 +293,7 @@ class App(tk.Tk):
                     f.write(f"{i}\n{t(a)} --> {t(b)}\n{x}\n\n")
             else:
                 for a, b, x in self.lines:
-                    f.write(f"[{fmt_ts(a)}] {x}\n")
+                    f.write(f"{x}\n")
 
     # ---- worker
     def run(self):
