@@ -169,14 +169,27 @@ class App(tk.Tk):
                     return [(0.0, dur, txt)] if txt else []
             else:
                 from faster_whisper import WhisperModel
-                wm = WhisperModel(self.model.get(), device="auto", compute_type="auto")
+                def cpu_model():
+                    return WhisperModel(self.model.get(), device="cpu", compute_type="int8")
+                try:
+                    wm = WhisperModel(self.model.get(), device="auto", compute_type="auto")
+                except Exception:
+                    wm = cpu_model()
                 lang = WHISPER_LANGS[self.lang.get()]
 
                 def transcribe(audio, dur):
-                    segs, _ = wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)
+                    nonlocal wm
+                    try:
+                        segs = list(wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)[0])
+                    except RuntimeError as e:  # e.g. libcublas/CUDA libs missing
+                        if "cublas" not in str(e).lower() and "cuda" not in str(e).lower() and "cudnn" not in str(e).lower():
+                            raise
+                        self.q.put(("status", "GPU unavailable, using CPU..."))
+                        wm = cpu_model()
+                        segs = list(wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)[0])
                     return [(x.start, x.end, x.text.strip()) for x in segs]
 
-            ytcmd = [find_tool("yt-dlp"), "-q", "--no-warnings", "-f", "worst[height>=240]/worst/best",
+            ytcmd = [find_tool("yt-dlp"), "-q", "--no-warnings", "-f", "wa*/worst[height>=240]/worst/best",
                      "--ffmpeg-location", os.path.dirname(find_tool("ffmpeg")) or ".",
                      "-o", "-", self.url.get().strip()]
             if self.cookies.get() != "none":
@@ -210,9 +223,11 @@ class App(tk.Tk):
                 self.q.put(("status", f"Transcribed {fmt_ts(offset)} of stream"))
 
             if not self.stop_evt.is_set():
+                try: yt.wait(timeout=3)
+                except Exception: pass
                 err = yt.stderr.read().decode(errors="ignore").strip() if yt.poll() is not None else ""
-                if offset == 0 and err:
-                    self.q.put(("error", err[-600:]))
+                if err:
+                    self.q.put(("error", f"Stream ended after {fmt_ts(offset)} (yt-dlp exit {yt.returncode}):\n" + err[-600:]))
             self.q.put(("status", "Stopped / stream ended"))
         except Exception as e:
             self.q.put(("error", str(e)))
