@@ -14,6 +14,7 @@ A Windows desktop app that transcribes Facebook livestreams and videos to text i
 - Two engines: **Whisper** (English, Tagalog, Spanish, Japanese, etc.) and **Meta MMS** (Ilocano, Cebuano, Tagalog, English)
 - Whisper model sizes from `tiny` to `large-v3`
 - Export the transcript as `.txt` (with timestamps) or `.srt` (subtitles)
+- Optional spellcheck: tick **Spellcheck** to underline misspelled words, then right-click one to pick a correction or ignore it. Corrections are included when you save. Only English and Spanish lines are checked.
 - Private or group streams are supported through your browser's login cookies
 
 ## Download
@@ -64,7 +65,7 @@ The MMS engine adds PyTorch and `transformers` to the build, so the `.exe` is la
 
 **Run from source:**
 ```bash
-pip install faster-whisper numpy
+pip install faster-whisper numpy pyspellchecker
 pip install torch transformers   # only needed for the MMS engine
 # put yt-dlp.exe and ffmpeg.exe in the bin\ folder (or on PATH)
 python app.py

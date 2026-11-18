@@ -1,4 +1,5 @@
 faster-whisper
 numpy
+pyspellchecker
 pyinstaller
 transformers

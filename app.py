@@ -1,5 +1,5 @@
 """FB Live Transcriber - captures a Facebook livestream and transcribes it live."""
-import os, sys, shutil, subprocess, threading, queue, time, datetime
+import os, re, sys, shutil, subprocess, threading, queue, time, datetime
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, scrolledtext
 
@@ -14,6 +14,9 @@ WHISPER_LANGS = {"Auto-detect": None, "English": "en", "Tagalog/Filipino": "tl",
 MMS_LANGS = {"Ilocano": "ilo", "Cebuano": "ceb", "Tagalog": "tgl", "English": "eng"}
 ENGINES = ["Whisper", "MMS (Ilocano, Cebuano...)"]
 MODELS = ["tiny", "base", "small", "medium", "large-v3"]
+# languages pyspellchecker ships dictionaries for (others are not checked)
+SPELL_LANGS = {"en", "es", "fr", "pt", "de", "it", "ru", "nl"}
+WORD_RE = re.compile(r"[^\W\d_]+(?:'[^\W\d_]+)*")
 
 
 def find_tool(name):
@@ -45,6 +48,9 @@ class App(tk.Tk):
         self.procs = []
         self.worker = None
         self.lines = []  # (start, end, text)
+        self.line_langs = {}  # line index -> language code of that line
+        self.checkers = {}  # language code -> SpellChecker (or None if unavailable)
+        self.ignored = set()
 
         top = ttk.Frame(self, padding=8); top.pack(fill="x")
         ttk.Label(top, text="Facebook video/live URL:").grid(row=0, column=0, sticky="w")
@@ -70,9 +76,14 @@ class App(tk.Tk):
         ttk.Combobox(top, textvariable=self.cookies, values=["none", "chrome", "edge", "firefox"], width=9, state="readonly").grid(row=3, column=3, padx=8)
         self.btn = ttk.Button(top, text="Start", command=self.toggle); self.btn.grid(row=3, column=4, padx=4)
         ttk.Button(top, text="Save...", command=self.save).grid(row=3, column=5)
+        self.spellcheck = tk.BooleanVar(value=False)
+        ttk.Checkbutton(top, text="Spellcheck", variable=self.spellcheck,
+                        command=self.recheck_all).grid(row=3, column=6, padx=(8, 0))
 
         self.out = scrolledtext.ScrolledText(self, wrap="word", font=("Segoe UI", 11))
         self.out.pack(fill="both", expand=True, padx=8, pady=4)
+        self.out.tag_config("misspelled", underline=True, foreground="#c00000")
+        self.out.bind("<Button-3>", self.on_right_click)
         self.status = tk.StringVar(value="Idle")
         foot = ttk.Frame(self); foot.pack(fill="x", padx=8, pady=(0, 6))
         ttk.Label(foot, textvariable=self.status, anchor="w").pack(side="left")
@@ -97,7 +108,10 @@ class App(tk.Tk):
             while True:
                 kind, val = self.q.get_nowait()
                 if kind == "text":
-                    self.out.insert("end", val + "\n"); self.out.see("end")
+                    i, line, lang = val
+                    self.line_langs[i] = lang
+                    self.out.insert("end", line, (f"L{i}",)); self.out.insert("end", "\n")
+                    self.check_line(i); self.out.see("end")
                 elif kind == "status":
                     self.status.set(val)
                 elif kind == "done":
@@ -108,6 +122,82 @@ class App(tk.Tk):
             pass
         self.after(150, self.poll)
 
+    # ---- spellcheck
+    def spell(self, lang):
+        if lang not in SPELL_LANGS:
+            return None
+        if lang not in self.checkers:
+            try:
+                from spellchecker import SpellChecker
+                self.checkers[lang] = SpellChecker(language=lang)
+            except Exception as e:
+                self.checkers[lang] = None
+                self.status.set(f"Spellcheck unavailable: {e}")
+        return self.checkers[lang]
+
+    def check_line(self, i):
+        rng = self.out.tag_ranges(f"L{i}")
+        if not rng:
+            return
+        start, end = str(rng[0]), str(rng[1])
+        self.out.tag_remove("misspelled", start, end)
+        sc = self.spellcheck.get() and self.spell(self.line_langs.get(i))
+        if not sc:
+            return
+        text = self.out.get(start, end)
+        body = text.find("] ") + 2 if text.startswith("[") else 0  # skip timestamp
+        for m in WORD_RE.finditer(text, body):
+            w = m.group().lower()
+            if len(w) > 1 and w not in self.ignored and w not in sc:
+                self.out.tag_add("misspelled", f"{start}+{m.start()}c", f"{start}+{m.end()}c")
+
+    def recheck_all(self):
+        for i in self.line_langs:
+            self.check_line(i)
+        if self.spellcheck.get() and self.line_langs and \
+                not any(self.spell(l) for l in set(self.line_langs.values())):
+            self.status.set("Spellcheck: no dictionary for this language (English/Spanish only)")
+
+    def on_right_click(self, e):
+        idx = self.out.index(f"@{e.x},{e.y}")
+        tags = self.out.tag_names(idx)
+        if "misspelled" not in tags:
+            return
+        line_tags = [t for t in tags if t.startswith("L") and t[1:].isdigit()]
+        if not line_tags:
+            return
+        i = int(line_tags[0][1:])
+        a, b = (str(x) for x in self.out.tag_prevrange("misspelled", idx + "+1c"))
+        word = self.out.get(a, b)
+        sc = self.spell(self.line_langs.get(i))
+        if not sc:
+            return
+        cands = sorted((c for c in (sc.candidates(word.lower()) or ()) if c != word.lower()),
+                       key=sc.word_usage_frequency, reverse=True)[:6]
+        menu = tk.Menu(self, tearoff=0)
+        for c in cands:
+            c = c.capitalize() if word[0].isupper() else c
+            menu.add_command(label=c, command=lambda c=c: self.replace_word(i, a, b, c))
+        if not cands:
+            menu.add_command(label="(no suggestions)", state="disabled")
+        menu.add_separator()
+        menu.add_command(label=f'Ignore "{word}"', command=lambda: self.ignore_word(word))
+        menu.tk_popup(e.x_root, e.y_root)
+
+    def replace_word(self, i, a, b, new):
+        self.out.delete(a, b)
+        self.out.insert(a, new, (f"L{i}",))
+        rng = self.out.tag_ranges(f"L{i}")
+        text = self.out.get(str(rng[0]), str(rng[1]))
+        body = text[text.find("] ") + 2:] if text.startswith("[") else text
+        st, en, _ = self.lines[i]
+        self.lines[i] = (st, en, body)  # so Save... exports the correction
+        self.check_line(i)
+
+    def ignore_word(self, word):
+        self.ignored.add(word.lower())
+        self.recheck_all()
+
     def toggle(self):
         if self.worker and self.worker.is_alive():
             self.stop(); return
@@ -116,7 +206,7 @@ class App(tk.Tk):
         for t in ("yt-dlp", "ffmpeg"):
             if not find_tool(t):
                 messagebox.showerror("Missing tool", f"{t} not found. Put {t}.exe in the app's bin folder."); return
-        self.stop_evt.clear(); self.lines.clear(); self.out.delete("1.0", "end")
+        self.stop_evt.clear(); self.lines.clear(); self.line_langs.clear(); self.out.delete("1.0", "end")
         self.btn.config(text="Stop")
         self.worker = threading.Thread(target=self.run, daemon=True); self.worker.start()
 
@@ -159,14 +249,16 @@ class App(tk.Tk):
                 mms = Wav2Vec2ForCTC.from_pretrained("facebook/mms-1b-all", target_lang=code,
                                                      ignore_mismatched_sizes=True).eval()
 
+                mms_lang = {"eng": "en"}.get(code)  # spellcheck language
+
                 def transcribe(audio, dur):
                     if float(np.sqrt(np.mean(audio ** 2))) < 0.005:  # near-silence
-                        return []
+                        return [], mms_lang
                     inp = proc(audio, sampling_rate=SAMPLE_RATE, return_tensors="pt")
                     with torch.no_grad():
                         ids = torch.argmax(mms(**inp).logits, dim=-1)[0]
                     txt = proc.decode(ids).strip()
-                    return [(0.0, dur, txt)] if txt else []
+                    return ([(0.0, dur, txt)] if txt else []), mms_lang
             else:
                 from faster_whisper import WhisperModel
                 def cpu_model():
@@ -179,15 +271,18 @@ class App(tk.Tk):
 
                 def transcribe(audio, dur):
                     nonlocal wm
+                    def go():
+                        segs, info = wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)
+                        return list(segs), info.language
                     try:
-                        segs = list(wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)[0])
+                        segs, detected = go()
                     except RuntimeError as e:  # e.g. libcublas/CUDA libs missing
                         if "cublas" not in str(e).lower() and "cuda" not in str(e).lower() and "cudnn" not in str(e).lower():
                             raise
                         self.q.put(("status", "GPU unavailable, using CPU..."))
                         wm = cpu_model()
-                        segs = list(wm.transcribe(audio, language=lang, vad_filter=True, beam_size=1)[0])
-                    return [(x.start, x.end, x.text.strip()) for x in segs]
+                        segs, detected = go()
+                    return [(x.start, x.end, x.text.strip()) for x in segs], lang or detected
 
             ytcmd = [find_tool("yt-dlp"), "-q", "--no-warnings", "-f", "wa*/worst[height>=240]/worst/best",
                      "--ffmpeg-location", os.path.dirname(find_tool("ffmpeg")) or ".",
@@ -214,11 +309,12 @@ class App(tk.Tk):
                 if len(buf) < SAMPLE_RATE * 2:  # <1s => stream ended
                     break
                 audio = np.frombuffer(buf, np.int16).astype(np.float32) / 32768.0
-                for st, en, txt in transcribe(audio, len(buf) / 2 / SAMPLE_RATE):
+                segs, seg_lang = transcribe(audio, len(buf) / 2 / SAMPLE_RATE)
+                for st, en, txt in segs:
                     if txt:
                         a, b = offset + st, offset + en
                         self.lines.append((a, b, txt))
-                        self.q.put(("text", f"[{fmt_ts(a)}] {txt}"))
+                        self.q.put(("text", (len(self.lines) - 1, f"[{fmt_ts(a)}] {txt}", seg_lang)))
                 offset += len(buf) / 2 / SAMPLE_RATE
                 self.q.put(("status", f"Transcribed {fmt_ts(offset)} of stream"))
 
